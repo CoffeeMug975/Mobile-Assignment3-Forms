@@ -1,20 +1,10 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-
-export default function SignIn({ navigation }: any) {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
-      <Text>Sign In Page</Text>
-      <Button title="Back to Home" onPress={() => navigation.navigate('Home')} />
-    </View>
-  );
-}
-import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+// Cleaned up import section & default function -- Dan
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-export default function SignIn({ navigation }) {
+export default function SignIn({ navigation }: any) {
   const SignInSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
@@ -27,8 +17,10 @@ export default function SignIn({ navigation }) {
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={SignInSchema}
+        // Updated to show a prompt on where the data is --Dan
         onSubmit={(values) => {
           console.log('Sign-In data:', values);
+          Alert.alert("user Data collected. Check terminal for details")
           // You can navigate or show success here
         }}
       >
@@ -55,7 +47,10 @@ export default function SignIn({ navigation }) {
             />
             {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
-            <Button title="Sign In" onPress={handleSubmit} />
+            {/* Changed button to TouchableOpacity --Dan  */}
+            <TouchableOpacity onPress={()=>handleSubmit()}>
+              <Text>Sign In</Text>
+            </TouchableOpacity>
           </>
         )}
       </Formik>
